@@ -38,7 +38,7 @@ async def cap(ctx):
 @client.command(aliases=["ms","latency"]) #ping latency cmd
 async def ping(self, ctx):
      uptime = str(datetime.timedelta(seconds=int(round(time.time()-startTime))))
-     await ctx.send("{0}ms. %s " % uptime .format(round(client.latency * 100)))
+     await ctx.send("{0}ms, uptime %s." % uptime .format(round(client.latency * 100)))
 
 @client.listen('on_message') #if "curious" in chat, send "curious"
 async def curious(message):
