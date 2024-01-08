@@ -1,2 +1,3 @@
 # curious
 Discord Bot
+- reo
