@@ -1,3 +1,4 @@
 # curious
 Discord Bot
-- reo
+- zaqsaw
+- reohn
