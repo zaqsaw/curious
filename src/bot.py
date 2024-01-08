@@ -22,8 +22,7 @@ async def on_message(ctx):
         print(f'called by: { ctx.author }')
         with open('genz_quotes.txt', 'r') as f:
             lines = list(f.readlines())
-            line = choice(lines)
-        await ctx.channel.send(f'.caption { line }')
+        await ctx.channel.send(choice(lines))
 
 client.run(token)
 
