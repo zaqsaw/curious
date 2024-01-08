@@ -18,7 +18,7 @@ async def on_ready():
 async def change_status():
      with open("ious.txt", "r") as f:
           bot_status = f.readlines()
-          client.change_presence(activity=discord.Acitivity(type=discord.ActivityType.Watching, name = choice(bot_status)))
+          client.change_presence(activity=discord.Activity(type=discord.ActivityType.Watching, name = choice(bot_status)))
           
      
 
