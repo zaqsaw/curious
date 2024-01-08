@@ -1,6 +1,7 @@
 import os
 from random import choice
 from itertools import cycle
+import datetime, time
 
 import discord
 from discord.ext import commands, tasks
@@ -13,6 +14,8 @@ client = commands.Bot(command_prefix='.', intents=intents)
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
+    global startTime
+    startTime = time.time()
 
 @tasks.loop(seconds=60) #status, check ious.txt
 async def change_status():
@@ -33,8 +36,9 @@ async def cap(ctx):
         await ctx.send(choice(lines))
 
 @client.command(aliases=["ms","latency"]) #ping latency cmd
-async def ping(ctx):
-     await ctx.send("{0}ms." .format(round(client.latency * 100)))
+async def ping(self, ctx):
+     uptime = str(datetime.timedelta(seconds=int(round(time.time()-startTime))))
+     await ctx.send("{0}ms. %s " % uptime .format(round(client.latency * 100)))
 
 @client.listen('on_message') #if "curious" in chat, send "curious"
 async def curious(message):
