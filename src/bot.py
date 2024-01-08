@@ -17,10 +17,9 @@ async def on_ready():
 @tasks.loop(seconds=60) #status, check ious.txt
 async def change_status():
      with open("ious.txt", "r") as f:
-          bot_status = f.readlines()
-          client.change_presence(activity=discord.Activity(type=discord.ActivityType.Watching, name = choice(bot_status)))
+          bot_status = cycle(f.readlines())
+          await client.change_presence(activity=discord.Watching(next(name = bot_status)))
           
-     
 
 @client.command(aliases=["gook","chink","asian"]) # reo was here :D
 async def goon(ctx):
