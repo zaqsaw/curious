@@ -10,3 +10,6 @@ Then run:
 ```
 python3 src/bot.py  --config <CONFIG_FILE_FULL_PATH>
 ```
+
+## Logs
+Logging outputs to curious.log in the directory running the app
