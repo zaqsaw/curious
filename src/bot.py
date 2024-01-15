@@ -18,14 +18,11 @@ client = commands.Bot(command_prefix='.', intents=intents)
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
+    bot_status = choice(ious)
+    print(f'changing status {bot_status}')
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name = f'you. | { bot_status }'))
     global startTime
     startTime = time.time()
-
-@tasks.loop(seconds=60) #status, check ious.txt
-async def change_status():
-    bot_status = choice(ious)
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name = bot_status))
-          
 
 @client.command(aliases=["gook","chink","asian"]) # reo was here :D
 async def goon(ctx):
