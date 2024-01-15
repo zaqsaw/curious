@@ -29,11 +29,6 @@ async def on_ready():
     global startTime
     startTime = time.time()
 
-@client.command(aliases=["gook","chink","asian"]) # reo was here :D
-async def goon(ctx):
-    logger.info(f'goon called by: { ctx.author }')
-    await ctx.send("https://cdn.discordapp.com/attachments/1036455284874432515/1193332807674646578/c6d96599ceda4988b99b2d9fb75a64b6.mov?ex=65ac54c8&is=6599dfc8&hm=afe9862cd5311b9302254f92a8dca17fefb9f880c97e8b96777cec74bdbc0008&")
-
 def load_show_map():
     global show_file
     global show_map
