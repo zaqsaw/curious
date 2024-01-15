@@ -44,13 +44,6 @@ async def ping(self, ctx):
      uptime = str(datetime.timedelta(seconds=int(round(time.time()-startTime))))
      await ctx.send("{0}ms, uptime %s." % uptime .format(round(client.latency * 100)))
 
-@client.listen('on_message') #if "curious" in chat, send "curious"
-async def curious(message):
-     if message.author == client.user:
-        return
-     if "curious" in message.content:
-          await message.channel.send("curious")
-
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument(
