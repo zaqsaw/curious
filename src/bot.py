@@ -60,6 +60,8 @@ async def show(ctx, *words):
     show_map = load_show_map()
     if phrase in show_map:
         await ctx.send(show_map[phrase])
+    else:
+        await ctx.send(f'{ phrase } not known')
 
 @client.command()
 async def save(ctx, *words):
