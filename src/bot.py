@@ -1,12 +1,16 @@
+import datetime
 import os
+import time
+import yaml
+from argparse import ArgumentParser
+from pathlib import Path
 from random import choice
 from itertools import cycle
-import datetime, time
 
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
+from discord.ext import tasks
 
-token = os.getenv('DISCORD_TOKEN')
 
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='.', intents=intents)
@@ -47,8 +51,21 @@ async def curious(message):
      if "curious" in message.content:
           await message.channel.send("curious")
 
+if __name__ == "__main__":
+    parser = ArgumentParser()
+    parser.add_argument(
+        "--config",
+        required=True,
+        type=Path,
+        help="location of the config file",
+    )
+    args = parser.parse_args()
 
-     
+    with open(args.config / "token.yml", "r") as file:
+        token = yaml.safe_load(file)["token"]
+    with open(args.config / "genz.yml", "r") as file:
+        genz = yaml.safe_load(file)["quotes"]
+    with open(args.config / "ious.yml", "r") as file:
+        ious = yaml.safe_load(file)["statuses"]
 
-client.run(token)
-
+    client.run(token)
