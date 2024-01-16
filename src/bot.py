@@ -51,6 +51,7 @@ def save_to_show_map(key, value):
 @client.command()
 async def show(ctx, *words):
     phrase = ' '.join(words)
+    phrase = phrase.lower()
     logger.info('show %s called by: %s', phrase, ctx.author)
     show_map = load_show_map()
     if phrase in show_map:
@@ -61,6 +62,7 @@ async def show(ctx, *words):
 @client.command()
 async def save(ctx, *words):
     phrase = ' '.join(words)
+    phrase = phrase.lower()
     logger.info('save %s called by: %s', phrase, ctx.author)
     attachments = ctx.message.attachments
     if phrase and len(attachments) == 1:
