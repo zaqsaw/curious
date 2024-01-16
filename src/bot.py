@@ -49,6 +49,12 @@ def save_to_show_map(key, value):
         yaml.dump(show_map, file)
 
 @client.command()
+async def list(ctx):
+    logger.info('list called by: %s', ctx.author)
+    show_map = load_show_map()
+    await ctx.send(', '.join(show_map.keys()), ephemeral=True)
+
+@client.command()
 async def show(ctx, *words):
     phrase = ' '.join(words)
     phrase = phrase.lower()
