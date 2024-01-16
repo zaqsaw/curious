@@ -15,6 +15,9 @@ from discord.ext import tasks
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
+if Path('curious.log').is_file():
+    os.rename('curious.log', f'curious_{ datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S") }.log')
 handler = logging.FileHandler(filename='curious.log', encoding='utf-8', mode='w')
 logger.addHandler(handler)
 intents = discord.Intents.all()
@@ -71,6 +74,10 @@ async def save(ctx, *words):
     phrase = phrase.lower()
     logger.info('save %s called by: %s', phrase, ctx.author)
     attachments = ctx.message.attachments
+    reference = ctx.message.reference
+    if reference and len(attachments) == 0:
+        ref_message = await ctx.fetch_message(reference.message_id)
+        attachments = ref_message.attachments
     if phrase and len(attachments) == 1:
         attachment = attachments[0]
         url = attachment.url
