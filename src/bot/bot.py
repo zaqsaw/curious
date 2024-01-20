@@ -2,7 +2,6 @@ import datetime
 import os
 import time
 import logging
-import yaml
 from argparse import ArgumentParser
 from pathlib import Path
 from random import choice
@@ -11,6 +10,8 @@ from itertools import cycle
 import discord
 from discord.ext import commands
 from discord.ext import tasks
+
+from .cfg import Config
 
 
 logger = logging.getLogger(__name__)
@@ -26,34 +27,16 @@ client = commands.Bot(command_prefix='.', intents=intents)
 @client.event
 async def on_ready():
     logger.info(f'{client.user} has connected to Discord!')
-    bot_status = choice(ious)
+    bot_status = choice(cfg.ious)
     logger.info(f'changing status {bot_status}')
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name = f'you. | { bot_status }'))
     global startTime
     startTime = time.time()
 
-def load_show_map():
-    global show_file
-    global show_map
-    show_map = {}
-    if show_file.is_file():
-        with open(show_file, "r") as file:
-            loaded = yaml.safe_load(file)
-        if loaded:
-            show_map = loaded
-    return show_map
-
-def save_to_show_map(key, value, show_map):
-    global show_file
-    logger.info("saving to %s %s: %s", show_file, key, value)
-    show_map[key] = value
-    with open(show_file, "w") as file:
-        yaml.dump(show_map, file)
-
 @client.command()
 async def list(ctx):
     logger.info('list called by: %s', ctx.author)
-    show_map = load_show_map()
+    show_map = await cfg.load_show_map()
     await ctx.send(', '.join(show_map.keys()), ephemeral=True)
 
 @client.command()
@@ -61,7 +44,7 @@ async def show(ctx, *words):
     phrase = ' '.join(words)
     phrase = phrase.lower()
     logger.info('show %s called by: %s', phrase, ctx.author)
-    show_map = load_show_map()
+    show_map = await cfg.load_show_map()
     if phrase in show_map:
         await ctx.send(show_map[phrase])
     else:
@@ -80,11 +63,11 @@ async def save(ctx, *words):
     if phrase and len(attachments) == 1:
         attachment = attachments[0]
         url = attachment.url
-        show_map = load_show_map()
+        show_map = await cfg.load_show_map()
         if phrase in show_map and ctx.author == "zalles":
             await ctx.send("suck it zalles")
             return
-        save_to_show_map(phrase, url, show_map)
+        await cfg.save_to_show_map(phrase, url, show_map)
         await ctx.send(f"saved { phrase }!")
     else:
         await ctx.send('".save phrase" requires a phrase and one attachment')
@@ -92,7 +75,7 @@ async def save(ctx, *words):
 @client.command(aliases=["genz","slang","hoodspeak"])
 async def cap(ctx):
     logger.info(f'cap called by: { ctx.author }')
-    await ctx.send(choice(genz))
+    await ctx.send(choice(cfg.genz))
 
 @client.command(aliases=["ms","latency"]) #ping latency cmd
 async def ping(ctx):
@@ -110,12 +93,5 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    with open(args.config / "token.yml", "r") as file:
-        token = yaml.safe_load(file)["token"]
-    with open(args.config / "genz.yml", "r") as file:
-        genz = yaml.safe_load(file)["quotes"]
-    with open(args.config / "ious.yml", "r") as file:
-        ious = yaml.safe_load(file)["statuses"]
-    show_file = args.config / "show.yml"
-
-    client.run(token, log_handler=handler, log_level=logging.INFO)
+    cfg = Config(args.config)
+    client.run(cfg.token, log_handler=handler, log_level=logging.INFO)
