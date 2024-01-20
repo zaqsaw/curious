@@ -1,7 +1,7 @@
 import datetime
+import logging
 import os
 import time
-import logging
 from argparse import ArgumentParser
 from pathlib import Path
 from random import choice
@@ -12,15 +12,10 @@ from discord.ext import commands
 from discord.ext import tasks
 
 from .cfg import Config
+from .logger import setup_logger
 
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-if Path('curious.log').is_file():
-    os.rename('curious.log', f'curious_{ datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S") }.log')
-handler = logging.FileHandler(filename='curious.log', encoding='utf-8', mode='w')
-logger.addHandler(handler)
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='.', intents=intents)
 
@@ -91,7 +86,15 @@ if __name__ == "__main__":
         type=Path,
         help="location of the config file",
     )
+    parser.add_argument(
+        "--logdir",
+        default="/tmp",
+        type=Path,
+        help="location of the config file",
+    )
     args = parser.parse_args()
 
+    args.logdir.mkdir(parents=True, exist_ok=True)
     cfg = Config(args.config)
+    handler = setup_logger(args.logdir)
     client.run(cfg.token, log_handler=handler, log_level=logging.INFO)
