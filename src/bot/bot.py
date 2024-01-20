@@ -43,10 +43,9 @@ def load_show_map():
             show_map = loaded
     return show_map
 
-def save_to_show_map(key, value):
+def save_to_show_map(key, value, show_map):
     global show_file
     logger.info("saving to %s %s: %s", show_file, key, value)
-    show_map = load_show_map()
     show_map[key] = value
     with open(show_file, "w") as file:
         yaml.dump(show_map, file)
@@ -81,7 +80,11 @@ async def save(ctx, *words):
     if phrase and len(attachments) == 1:
         attachment = attachments[0]
         url = attachment.url
-        save_to_show_map(phrase, url)
+        show_map = load_show_map()
+        if phrase in show_map and ctx.author == "zalles":
+            await ctx.send("suck it zalles")
+            return
+        save_to_show_map(phrase, url, show_map)
         await ctx.send(f"saved { phrase }!")
     else:
         await ctx.send('".save phrase" requires a phrase and one attachment')
