@@ -29,7 +29,7 @@ class Commands:
         logger.info(f"{self.client.user} has connected to Discord!")
         await self.update_status()
 
-    def has_whitelist_role(roles):
+    def has_whitelist_role(self, roles):
         for role in roles:
             if role.name in whitelist_roles:
                 return True
@@ -37,7 +37,7 @@ class Commands:
 
     def validate(self, cmd, ctx):
         logger.info("%s called by %s in %s", cmd, ctx.author, ctx.guild)
-        if ctx.guild.id == private_id and not has_whitelist_role(ctx.author.roles):
+        if ctx.guild.id == private_id and not self.has_whitelist_role(ctx.author.roles):
             logger.info("INVALID: User %s did not have whitelist roles", ctx.author)
             return False
         return True
