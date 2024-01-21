@@ -1,13 +1,14 @@
 import typing as ty
-import logging
 import yaml
 from asyncio import Lock
 from asyncio import run
 from dataclasses import dataclass
 from pathlib import Path
 
+from .logger import get_logger
 
-logger = logging.getLogger(__name__)
+
+logger = get_logger()
 
 
 class Config:
