@@ -82,7 +82,7 @@ class Commands:
             url = attachment.url
             show_map = await self.cfg.load_show_map()
             if not await self.is_zalles_overwriting(phrase, show_map, ctx.author):
-                await self.cfg.save_to_show_map(phrase, url, show_map)
+                await self.cfg.save_to_show_map(phrase, url)
                 await ctx.send(f"saved { phrase }!")
         else:
             await ctx.send('".save phrase" requires a phrase and one attachment')
