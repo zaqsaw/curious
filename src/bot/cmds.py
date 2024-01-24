@@ -62,7 +62,7 @@ class Commands:
         else:
             await ctx.send(f"{ phrase } not known")
 
-    async def is_zalles_overwriting(self, phrase, show_map, author):
+    async def is_zalles_overwriting(self, ctx, phrase, show_map, author):
         if phrase in show_map and author.id == 180807596670713856:
             await ctx.send("suck it zalles")
             return True
@@ -92,6 +92,9 @@ class Commands:
             return
         await ctx.send(choice(self.cfg.genz))
 
+    async def steal(ctx, emoji: discord.PartialEmoji):
+        await ctx.send(emoji.url)
+        
     async def ping(self, ctx):
         if not self.validate("ping", ctx):
             return
