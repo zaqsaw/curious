@@ -61,6 +61,10 @@ if __name__ == "__main__":
     @client.command(aliases=["genz","slang","hoodspeak"])
     async def cap(ctx):
         await cmds.cap(ctx)
+
+    @client.command()
+    async def steal(ctx, emoji: discord.PartialEmoji):
+        await cmds.steal(ctx, emoji: discord.PartialEmoji)
     
     @client.command(aliases=["ms","latency"]) #ping latency cmd
     async def ping(ctx):
