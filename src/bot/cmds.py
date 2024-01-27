@@ -92,7 +92,7 @@ class Commands:
             return
         await ctx.send(choice(self.cfg.genz))
 
-    async def steal(ctx, emoji: discord.PartialEmoji):
+    async def steal(self, ctx, emoji: discord.PartialEmoji):
         await ctx.send(emoji.url)
         
     async def ping(self, ctx):
