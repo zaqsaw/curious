@@ -48,13 +48,13 @@ if __name__ == "__main__":
     
     @client.command()
     async def show(ctx, *words):
-        phrase = str(f''.join(words))
+        phrase = str(f' '.join(words))
         phrase = phrase.lower()
         await cmds.show(ctx, phrase)
 
     @client.command()
     async def save(ctx, *words):
-        phrase = str(f''.join(words))
+        phrase = str(f' '.join(words))
         phrase = phrase.lower()
         await cmds.save(ctx, phrase)
 
